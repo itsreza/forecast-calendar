@@ -1,24 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import routes from "./router/routes";
+import { Route } from "react-router-dom";
+import { Grid } from "@mui/material";
 
 function App() {
+  const renderRoutes = routes.map((route) => (
+    <Route key={route.path} {...route} />
+  ));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid container spacing={2}>
+      <Grid item xs={8}>
+        {renderRoutes}
+      </Grid>
+    </Grid>
   );
 }
 
