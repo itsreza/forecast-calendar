@@ -1,4 +1,4 @@
-import { ADD_NEW_EVENT } from "../constants/eventConstants";
+import { ADD_NEW_EVENT, REMOVE_EVENT } from "../constants/eventConstants";
 
 const initState = {
   eventsList: [],
@@ -13,6 +13,13 @@ const eventReducer = (state = initState, action) => {
         eventsList: [...state.eventsList, action.payload],
       };
       break;
+    case REMOVE_EVENT:
+      newState = {
+        ...state,
+        eventsList: [
+          ...state.eventsList?.filter((event) => event.key !== action.payload),
+        ],
+      };
     default:
       break;
   }

@@ -1,0 +1,1 @@
+export const GREGORIAN_DASHED_DATE_FORMAT = "YYYY-MM-DD";

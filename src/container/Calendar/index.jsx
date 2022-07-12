@@ -6,7 +6,13 @@ import AddEventForm from "../../components/AddEventForm";
 import DatePicker from "../../components/DatePicker";
 import Dialog from "../../components/Dialog";
 import EventItem from "../../components/EventItem";
+import AddEventDialogActions from "../../components/widgets/AddEvent/AddEventDialogActions";
+import Header from "../../components/widgets/Header";
+import { GREGORIAN_DASHED_DATE_FORMAT } from "../../shared/constants/dateFormats";
+import { convertDateToEntryFormat } from "../../shared/utils/dateConvertor";
+import uniqueIDGenerator from "../../shared/utils/uniqueIDGenerator";
 import { addNewEventRequested } from "../../store/actions/eventActions";
+import classes from "./index.module.scss"
 
 export default function Calendar() {
   const currentDate = moment();
@@ -19,7 +25,7 @@ export default function Calendar() {
   const [isOpenDialog, setIsOpenDialog] = useState(true);
   const [dialogType, setDialogType] = useState("WATCH_EVENT");
   const [newEventForm, setNewEventForm] = useState({});
-  const [eventList, setEventList] = useState([]);
+
 
   const isWatchEvent = dialogType === "WATCH_EVENT";
 
@@ -45,31 +51,28 @@ export default function Calendar() {
     </>
   );
 
-  const addEventActionsComponent = (
-    <>
-      <button
-        onClick={() => {
-          setDialogType("WATCH_EVENT");
-          const eventDetail = { ...newEventForm, date: selectedDate };
-          setEventList((prevState) => [...prevState, eventDetail]);
-          dispatch(addNewEventRequested(eventDetail));
-        }}
-      >
-        Submit Event
-      </button>
-    </>
-  );
+  const addEventActionsComponent = <AddEventDialogActions onSubmit={() => {
+    setDialogType("WATCH_EVENT");
+    const eventDetail = { ...newEventForm, date: selectedDate , key : uniqueIDGenerator()};
+    dispatch(addNewEventRequested(eventDetail));
+  }} />
+
+  
 
   const renderEventItems = eventsList
     ?.filter(
       (event) =>
-        moment(event.date).format("YYYY-MM-DD") ===
-        moment(selectedDate).format("YYYY-MM-DD")
+      convertDateToEntryFormat(event.date) === convertDateToEntryFormat(selectedDate)
     )
-    .map((event) => <EventItem {...event} />);
+    .map((event) => <EventItem {...event} id={event.key} />);
 
   return (
-    <div>
+    <div className={classes.calendar_container}>
+        <div className={classes.welcome}>
+        <div className={classes.title}><span>👋 </span> Hey Dear, SnappMarket Developers !</div>
+        <div>Hi</div>
+        </div>
+      
       <DatePicker onChange={onChangeDatePicker} value={selectedDate} />
       <Dialog
         actionsComponent={

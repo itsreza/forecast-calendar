@@ -1,0 +1,22 @@
+
+.calendar_container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+
+    .welcome {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        .title {
+display: flex;
+align-items: center;
+font-size: 17px;
+            > span {
+                font-size: 30px;
+                margin-right: 10px;
+            }
+        }
+    }
+}
