@@ -1,9 +1,29 @@
 .event_item {
   display: flex;
-  width: 300px;
+  width: 400px;
+  margin: 10px;
+  background: #f2f2f2;
+  color: black;
+  padding: 10px 20px;
+  border-radius: 6px;
   justify-content: space-between;
   &_info {
     display: flex;
     flex-direction: column;
+    .title {
+      font-weight: 500;
+      font-size: 15px;
+      
+    }
+    .description {
+      color: #7e7e7e;
+      font-size: 14px;
+    }
   }
+.delete_button {
+  color: #9e9e9e;
+  :hover {
+    color: #000;
+  }
+}
 }

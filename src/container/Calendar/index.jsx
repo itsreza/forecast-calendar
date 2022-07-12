@@ -6,12 +6,14 @@ import AddEventForm from "../../components/AddEventForm";
 import DatePicker from "../../components/DatePicker";
 import Dialog from "../../components/Dialog";
 import EventItem from "../../components/EventItem";
+import Button from "../../components/UI/Button";
 import AddEventDialogActions from "../../components/widgets/AddEvent/AddEventDialogActions";
 import Header from "../../components/widgets/Header";
 import { GREGORIAN_DASHED_DATE_FORMAT } from "../../shared/constants/dateFormats";
 import { convertDateToEntryFormat } from "../../shared/utils/dateConvertor";
 import uniqueIDGenerator from "../../shared/utils/uniqueIDGenerator";
 import { addNewEventRequested } from "../../store/actions/eventActions";
+import AddIcon from '@mui/icons-material/Add';
 import classes from "./index.module.scss";
 
 export default function Calendar() {
@@ -41,12 +43,12 @@ export default function Calendar() {
 
   const watchEventActionsComponent = (
     <>
-      <button onClick={() => setDialogType("ADD_EVENT")}>Add New Event</button>
-      <button
-        onClick={() => history.push(`/weather?date=${moment(selectedDate)}`)}
-      >
-        See Weather
-      </button>
+    <Button onClick={() => setDialogType("ADD_EVENT")} startIcon={<AddIcon />} variant="outlined">
+    Add New Event
+    </Button>
+    <Button   onClick={() => history.push(`/weather?date=${moment(selectedDate)}`)} startIcon={<span style={{fontSize : 14}}>⛅️</span>} variant="outlined">
+    Weather Forecast
+    </Button>
     </>
   );
 
@@ -72,6 +74,16 @@ export default function Calendar() {
     )
     .map((event) => <EventItem {...event} id={event.key} />);
 
+
+    const selectedDialogDate = moment(selectedDate).format("YYYY/MM/DD")
+
+    const notFoundEventComponent = <>
+    <span>There's No Event For Today, Let's Create Now.</span>
+    <span>30</span>
+    <span>30</span>
+    <span>30</span>
+    </>
+
   return (
     <div className={classes.calendar_container}>
       <div className={classes.welcome}>
@@ -93,7 +105,7 @@ export default function Calendar() {
         onClose={() => setIsOpenDialog(false)}
       >
         {dialogType === "WATCH_EVENT" ? (
-          <>{renderEventItems}</>
+          <>{renderEventItems?.length > 0 ? renderEventItems : <div>{notFoundEventComponent}</div>}</>
         ) : (
           <AddEventForm onBlur={onBlurAddEventForm} />
         )}
