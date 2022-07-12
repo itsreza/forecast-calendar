@@ -1,0 +1,20 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  height: 70px;
+  padding: 30px 0px;
+  color: #818181;
+  width: 450px;
+  .date {
+    span {
+      background: #f2f2f2;
+      margin: 0px 4px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 17px;
+      font-weight: 500;
+    }
+  }
+}

@@ -1,11 +1,16 @@
-import React from 'react'
-import TextField from '../TextField'
-
-export default function AddEventForm({onBlur}) {
+import React from "react";
+import TextField from "../TextField";
+import classes from "./index.module.scss";
+export default function AddEventForm({ onBlur }) {
   return (
-    <>
-    <TextField name="title" onBlur={onBlur} label="title" />
-    <TextField name="description" onBlur={onBlur}  label="description" />
-    </>
-  )
+    <div className={classes.form_container}>
+      <TextField fullWidth name="title" onBlur={onBlur} label="title" />
+      <TextField
+        fullWidth
+        name="description"
+        onBlur={onBlur}
+        label="description"
+      />
+    </div>
+  );
 }
