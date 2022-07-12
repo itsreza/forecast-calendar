@@ -1,0 +1,9 @@
+.event_item {
+  display: flex;
+  width: 300px;
+  justify-content: space-between;
+  &_info {
+    display: flex;
+    flex-direction: column;
+  }
+}
