@@ -8,3 +8,24 @@
   text-align: center;
   color: #837979;
 }
+
+
+.weather_card_container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.title_separator {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.green_icon {
+color: #2ecc71;
+}
+
+.red_icon {
+  color: #e74c3c;
+}
