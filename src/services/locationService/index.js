@@ -14,7 +14,6 @@ export const getCurrentLocation = () => {
       (pos) => success(pos),
       (er) => er
     );
-    console.log({ result });
   } else {
     return "Geolocation is not supported by this browser.";
   }

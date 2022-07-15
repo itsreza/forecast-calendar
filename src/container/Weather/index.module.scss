@@ -9,7 +9,6 @@
   color: #837979;
 }
 
-
 .weather_card_container {
   display: flex;
   width: 100%;
@@ -23,9 +22,16 @@
 }
 
 .green_icon {
-color: #2ecc71;
+  color: #2ecc71;
 }
 
 .red_icon {
   color: #e74c3c;
+}
+
+.error_location {
+  color: #e74c3c;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 10px;
 }

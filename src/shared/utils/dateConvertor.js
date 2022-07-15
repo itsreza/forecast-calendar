@@ -11,3 +11,10 @@ export const convertDateToEntryFormat = (
   date,
   format = GREGORIAN_DASHED_DATE_FORMAT
 ) => moment(date).format(format);
+
+export const convertTimeStampToDateFormat = (
+  date,
+  format = GREGORIAN_DASHED_DATE_FORMAT
+) => {
+  return moment.unix(date).format(format);
+};

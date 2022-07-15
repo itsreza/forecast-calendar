@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 
+const defaultCoords = {
+  latitude: 35.7488336,
+  longitude: 51.3069211,
+};
+
 export function useCurrentPosition(options) {
   const [position, setPosition] = useState();
-  const [error, setError] = useState();
+  const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
     let canceled = false;
@@ -15,7 +20,14 @@ export function useCurrentPosition(options) {
       },
       (error) => {
         if (!canceled) {
-          setError(error);
+          setPosition({
+            coords: defaultCoords,
+          });
+          setErrorMessage(
+            error.code === 2
+              ? "⚠️ Network Error To Get Location Turn on Vpn or Try Again..."
+              : error?.message
+          );
         }
       },
       options
@@ -26,5 +38,5 @@ export function useCurrentPosition(options) {
     };
   }, [options]);
 
-  return [position, error];
+  return [position, errorMessage];
 }
