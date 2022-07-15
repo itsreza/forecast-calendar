@@ -18,3 +18,5 @@ export const convertTimeStampToDateFormat = (
 ) => {
   return moment.unix(date).format(format);
 };
+
+export const getCurrentDate = () => moment();

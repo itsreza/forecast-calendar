@@ -1,8 +1,8 @@
 import React from "react";
+import { convertDateToEntryFormat } from "../../../../shared/utils/dateConvertor";
 import classes from "./index.module.scss";
 export default function EmptyEvent({ date }) {
-  const separatedDate = date?.toString().split("/");
-
+  const separatedDate = convertDateToEntryFormat(date)?.toString().split("-");
   return (
     <div className={classes.root}>
       <span>There's No Event For This Day, Let's Create Now.</span>

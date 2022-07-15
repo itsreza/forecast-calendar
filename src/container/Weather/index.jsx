@@ -9,7 +9,7 @@ import KeyboardDoubleArrowDownOutlinedIcon from "@mui/icons-material/KeyboardDou
 import ThermostatOutlinedIcon from "@mui/icons-material/ThermostatOutlined";
 import WindPowerOutlinedIcon from "@mui/icons-material/WindPowerOutlined";
 import AirOutlinedIcon from "@mui/icons-material/AirOutlined";
-import WeatherCard from "./WeatherCard";
+import WeatherCard from "../../components/widgets/WeatherCard";
 import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
 import { useCurrentPosition } from "../../hooks/useCurrentPosition";
 import convertKelvinToCelsius from "../../shared/utils/kelvinToCelsius";

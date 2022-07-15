@@ -1,35 +1,35 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import AddEventForm from "../../components/AddEventForm";
-import DatePicker from "../../components/DatePicker";
-import Dialog from "../../components/Dialog";
-import EventItem from "../../components/EventItem";
-import Button from "../../components/UI/Button";
-import AddEventDialogActions from "../../components/widgets/AddEvent/AddEventDialogActions";
-import Header from "../../components/widgets/Header";
-import { GREGORIAN_DASHED_DATE_FORMAT } from "../../shared/constants/dateFormats";
-import { convertDateToEntryFormat } from "../../shared/utils/dateConvertor";
+import { useSelector } from "react-redux";
+import AddEventForm from "../../components/widgets/AddEventDialog/AddEventForm";
+import DatePicker from "../../components/UI/DatePicker";
+import Dialog from "../../components/UI/Dialog";
+import EventItem from "../../components/widgets/EventDialog/EventItem";
+import AddEventDialogActions from "../../components/widgets/AddEventDialog/AddEventDialogActions";
+import {
+  convertDateToEntryFormat,
+  getCurrentDate,
+} from "../../shared/utils/dateConvertor";
 import uniqueIDGenerator from "../../shared/utils/uniqueIDGenerator";
-import { addNewEventRequested } from "../../store/actions/eventActions";
-import AddIcon from "@mui/icons-material/Add";
 import classes from "./index.module.scss";
-import EmptyEvent from "../../components/widgets/EmptyEvent";
+import EmptyEvent from "../../components/widgets/EventDialog/EmptyEvent";
+import EventDialogActions from "../../components/widgets/EventDialog/EventDialogActions";
 
 export default function Calendar() {
-  const currentDate = moment();
-  const history = useHistory();
-  const dispatch = useDispatch();
+  const currentDate = getCurrentDate();
+
+  /** Dialog Types */
+  const WATCH_EVENT_DIALOG_TYPE = "WATCH_EVENT";
+  const ADD_EVENT_DIALOG_TYPE = "ADD_EVENT";
+
   const { eventsList } = useSelector((state) => ({
     eventsList: state?.events?.eventsList,
   }));
   const [selectedDate, setSelectedDate] = useState(currentDate);
   const [isOpenDialog, setIsOpenDialog] = useState(true);
-  const [dialogType, setDialogType] = useState("WATCH_EVENT");
+  const [dialogType, setDialogType] = useState(WATCH_EVENT_DIALOG_TYPE);
   const [newEventForm, setNewEventForm] = useState({});
 
-  const isWatchEvent = dialogType === "WATCH_EVENT";
+  const isWatchEvent = dialogType === WATCH_EVENT_DIALOG_TYPE;
 
   const onChangeDatePicker = (date) => setSelectedDate(date);
 
@@ -43,37 +43,24 @@ export default function Calendar() {
   }, [selectedDate]);
 
   const watchEventActionsComponent = (
-    <>
-      <Button
-        onClick={() => setDialogType("ADD_EVENT")}
-        startIcon={<AddIcon />}
-        variant="outlined"
-      >
-        Add New Event
-      </Button>
-      <Button
-        onClick={() => history.push(`/weather?date=${moment(selectedDate)}`)}
-        startIcon={<span style={{ fontSize: 14 }}>⛅️</span>}
-        variant="outlined"
-      >
-        Weather Forecast
-      </Button>
-    </>
+    <EventDialogActions
+      selectedDate={selectedDate}
+      onAddEvent={() => setDialogType(ADD_EVENT_DIALOG_TYPE)}
+    />
   );
 
   const addEventActionsComponent = (
     <AddEventDialogActions
-      onSubmit={() => {
-        setDialogType("WATCH_EVENT");
-        const eventDetail = {
-          ...newEventForm,
-          date: selectedDate,
-          key: uniqueIDGenerator(),
-        };
-        dispatch(addNewEventRequested(eventDetail));
+      eventDetail={{
+        ...newEventForm,
+        date: selectedDate,
+        key: uniqueIDGenerator(),
       }}
+      onAfterSubmit={() => setDialogType(WATCH_EVENT_DIALOG_TYPE)}
     />
   );
+
+  const onCloseDialog = () => setIsOpenDialog(false);
 
   const renderEventItems = eventsList
     ?.filter(
@@ -82,14 +69,6 @@ export default function Calendar() {
         convertDateToEntryFormat(selectedDate)
     )
     .map((event) => <EventItem {...event} id={event.key} />);
-
-  const selectedDialogDate = moment(selectedDate).format("YYYY/MM/DD");
-
-  const notFoundEventComponent = (
-    <>
-      <EmptyEvent date={selectedDialogDate} />
-    </>
-  );
 
   return (
     <div className={classes.calendar_container}>
@@ -109,14 +88,14 @@ export default function Calendar() {
         }
         title="Events"
         isOpen={isOpenDialog}
-        onClose={() => setIsOpenDialog(false)}
+        onClose={onCloseDialog}
       >
-        {dialogType === "WATCH_EVENT" ? (
+        {dialogType === WATCH_EVENT_DIALOG_TYPE ? (
           <>
             {renderEventItems?.length > 0 ? (
               renderEventItems
             ) : (
-              <div>{notFoundEventComponent}</div>
+              <EmptyEvent date={selectedDate} />
             )}
           </>
         ) : (

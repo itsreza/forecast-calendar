@@ -1,5 +1,5 @@
 import React from "react";
-import TextField from "../TextField";
+import TextField from "../../../UI/TextField";
 import classes from "./index.module.scss";
 export default function AddEventForm({ onBlur }) {
   return (

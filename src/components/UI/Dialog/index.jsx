@@ -16,15 +16,14 @@ export default function Dialog({
     <MaterialDialog className={classes.dialog} onClose={onClose} open={isOpen}>
       <DialogTitle className={classes.dialog_header}>
         {title}
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-        >
+        <IconButton aria-label="close" onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
       {children}
-      <DialogActions className={classes.dialog_actions}>{actionsComponent}</DialogActions>
+      <DialogActions className={classes.dialog_actions}>
+        {actionsComponent}
+      </DialogActions>
     </MaterialDialog>
   );
 }

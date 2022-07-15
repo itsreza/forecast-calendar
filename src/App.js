@@ -14,7 +14,7 @@ function App() {
       <Grid xs={12} item>
         <Header />
       </Grid>
-      <Grid className={classes.app_layout} item xs={4}>
+      <Grid className={classes.app_layout} item lg={6} md={6} sm={8} xs={11}>
         {renderRoutes}
       </Grid>
     </Grid>
