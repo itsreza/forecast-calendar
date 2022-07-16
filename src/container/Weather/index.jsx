@@ -2,7 +2,6 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getRequestMethod } from "../../services/httpService";
-import { getCurrentLocation } from "../../services/locationService";
 import classes from "./index.module.scss";
 import KeyboardDoubleArrowUpOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowUpOutlined";
 import KeyboardDoubleArrowDownOutlinedIcon from "@mui/icons-material/KeyboardDoubleArrowDownOutlined";
@@ -18,24 +17,25 @@ import {
   convertTimeStampToDateFormat,
 } from "../../shared/utils/dateConvertor";
 import Loading from "../../components/UI/Loading";
+
+const WEATHER_API_TOKEN = process.env.REACT_APP_WEATHER_SERVICE_TOKEN ?? "8594d71d49825299f5556a533c99aa2f"
+
 export default function Weather() {
   const [weather, setWeather] = useState();
   const [position, locationErrorMessage] = useCurrentPosition();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const searchParam = useLocation()?.search;
   const dateURLQueryString = new URLSearchParams(searchParam).get("date");
+  const showingDate = convertDateToEntryFormat(dateURLQueryString)
+  
 
-  const convertedDateToTimeStamp = moment(dateURLQueryString).format("X");
-
-  const showingDate = moment(dateURLQueryString).format("YYYY/DD/MM");
-
+  /** Get Weather Requested And Filtered forecast with Time */
   useEffect(() => {
-    setIsLoading(true);
     if (position) {
       const {
         coords: { latitude, longitude },
       } = position;
-      const apiAddress = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&cnt=100&appid=${process.env.REACT_APP_WEATHER_SERVICE_TOKEN}`;
+      const apiAddress = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&cnt=100&appid=${WEATHER_API_TOKEN}`;
       getRequestMethod(apiAddress)
         .then((response) => {
           const currentDayWeather = response?.data?.list?.filter(
@@ -46,7 +46,7 @@ export default function Weather() {
               );
             }
           )?.[0];
-          setWeather(currentDayWeather);
+          setWeather({...currentDayWeather , city : response?.data?.city});
         })
         .finally(() => setIsLoading(false));
     }
@@ -64,6 +64,7 @@ export default function Weather() {
         <>
           <div className={classes.title}>⛅️ Forecast</div>
           <div className={classes.date}>Date : {showingDate}</div>
+          <div className={classes.date}>Station : {`${weather?.city?.country} - ${weather?.city?.name}`}</div>
           {locationErrorMessage && (
             <div className={classes.error_location}>{locationErrorMessage}</div>
           )}
@@ -80,7 +81,7 @@ export default function Weather() {
               }
             />
             <WeatherCard
-              value={moment(weather?.sys?.sunset).format("YYYY/DD/MM HH:mm:SS")}
+              value={moment(weather?.sys?.sunset).format("HH:mm:SS")}
               label="Sunset"
               icon={<WbSunnyOutlinedIcon />}
             />

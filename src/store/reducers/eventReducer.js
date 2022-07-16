@@ -20,6 +20,7 @@ const eventReducer = (state = initState, action) => {
           ...state.eventsList?.filter((event) => event.key !== action.payload),
         ],
       };
+      break;
     default:
       break;
   }

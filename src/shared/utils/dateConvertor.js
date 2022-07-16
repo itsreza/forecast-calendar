@@ -20,3 +20,8 @@ export const convertTimeStampToDateFormat = (
 };
 
 export const getCurrentDate = () => moment();
+
+export const isFiveLatestDay = (date) => {
+  const daysDiff = getCurrentDate().diff(date, "days");
+  return -5 < daysDiff && daysDiff < 1;
+};

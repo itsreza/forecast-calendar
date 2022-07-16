@@ -25,13 +25,16 @@ export default function Calendar() {
     eventsList: state?.events?.eventsList,
   }));
   const [selectedDate, setSelectedDate] = useState(currentDate);
-  const [isOpenDialog, setIsOpenDialog] = useState(true);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState(WATCH_EVENT_DIALOG_TYPE);
   const [newEventForm, setNewEventForm] = useState({});
 
   const isWatchEvent = dialogType === WATCH_EVENT_DIALOG_TYPE;
 
-  const onChangeDatePicker = (date) => setSelectedDate(date);
+  const onChangeDatePicker = (date) => {
+    setSelectedDate(date)
+    setIsOpenDialog(true)
+  };
 
   const onBlurAddEventForm = (e) => {
     const { name, value } = e?.target;
@@ -39,8 +42,11 @@ export default function Calendar() {
   };
 
   useEffect(() => {
-    setIsOpenDialog(true);
-  }, [selectedDate]);
+    if(!isOpenDialog || dialogType === "WATCH_EVENT"){
+      setNewEventForm({})
+      setDialogType(WATCH_EVENT_DIALOG_TYPE)
+    }
+  }, [isOpenDialog , dialogType]);
 
   const watchEventActionsComponent = (
     <EventDialogActions
@@ -60,7 +66,8 @@ export default function Calendar() {
     />
   );
 
-  const onCloseDialog = () => setIsOpenDialog(false);
+  const onCloseDialog = () => setIsOpenDialog(false)
+  
 
   const renderEventItems = eventsList
     ?.filter(
